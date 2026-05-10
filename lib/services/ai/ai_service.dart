@@ -39,7 +39,7 @@ class AiService {
     }
 
     try {
-      final requestBody = _buildRequestBody(messages, tools);
+      final requestBody = _buildRequestBody(messages, tools, stream: true);
       
       logger.d('AI Request: ${jsonEncode(requestBody)}');
 
@@ -149,8 +149,9 @@ class AiService {
 
   Map<String, dynamic> _buildRequestBody(
     List<AiMessage> messages,
-    List<AiTool>? tools,
-  ) {
+    List<AiTool>? tools, {
+    bool stream = false,
+  }) {
     final body = <String, dynamic>{
       'model': _config!.model,
       'messages': messages.map((m) => {
@@ -159,7 +160,7 @@ class AiService {
       }).toList(),
       'temperature': _config!.temperature,
       'max_tokens': _config!.maxTokens,
-      'stream': true,
+      'stream': stream,
     };
 
     if (tools != null && tools.isNotEmpty) {

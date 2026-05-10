@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/theme/app_theme.dart';
+import '../../../models/ssh/ssh_connection.dart';
 import '../../../providers/ssh/ssh_connections_provider.dart';
 import '../../widgets/common/empty_state.dart';
 
@@ -171,7 +172,7 @@ class SshConnectionsScreen extends ConsumerWidget {
     );
   }
 
-  void _showConnectionDetails(BuildContext context, WidgetRef ref, connection) {
+  void _showConnectionDetails(BuildContext context, WidgetRef ref, SshConnection connection) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -300,14 +301,14 @@ class SshConnectionsScreen extends ConsumerWidget {
     );
   }
 
-  Future<void> _connect(BuildContext context, WidgetRef ref, connection) async {
+  Future<void> _connect(BuildContext context, WidgetRef ref, SshConnection connection) async {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Connecting to ${connection.name}...')),
     );
     // TODO: Implement actual connection
   }
 
-  void _confirmDelete(BuildContext context, WidgetRef ref, connection) {
+  void _confirmDelete(BuildContext context, WidgetRef ref, SshConnection connection) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(

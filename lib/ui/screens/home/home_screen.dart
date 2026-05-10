@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/theme/app_theme.dart';
+import '../../../models/project/project.dart';
+import '../../../models/ssh/ssh_connection.dart';
 import '../../../providers/ssh/ssh_connections_provider.dart';
 import '../../../providers/project/project_provider.dart';
 import '../../widgets/common/empty_state.dart';
@@ -184,7 +186,7 @@ class HomeScreen extends ConsumerWidget {
   Widget _buildFavoriteConnectionsList(
     BuildContext context,
     WidgetRef ref,
-    List connections,
+    List<SshConnection> connections,
   ) {
     return SizedBox(
       height: 100,
@@ -241,7 +243,7 @@ class HomeScreen extends ConsumerWidget {
   Widget _buildRecentProjectsList(
     BuildContext context,
     WidgetRef ref,
-    List projects,
+    List<Project> projects,
   ) {
     return Column(
       children: projects.map((project) {
@@ -269,7 +271,7 @@ class HomeScreen extends ConsumerWidget {
   Widget _buildConnectionsList(
     BuildContext context,
     WidgetRef ref,
-    List connections,
+    List<SshConnection> connections,
   ) {
     if (connections.isEmpty) {
       return EmptyState(
@@ -306,20 +308,20 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 
-  Future<void> _connectToServer(BuildContext context, WidgetRef ref, connection) async {
+  Future<void> _connectToServer(BuildContext context, WidgetRef ref, SshConnection connection) async {
     // TODO: Implement connection logic
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Connecting to ${connection.name}...')),
     );
   }
 
-  Future<void> _openProject(BuildContext context, WidgetRef ref, project) async {
+  Future<void> _openProject(BuildContext context, WidgetRef ref, Project project) async {
     ref.read(currentProjectProvider.notifier).state = project;
     await ref.read(projectsProvider.notifier).updateLastOpened(project.id);
     // TODO: Navigate to project workspace
   }
 
-  void _showConnectionOptions(BuildContext context, WidgetRef ref, connection) {
+  void _showConnectionOptions(BuildContext context, WidgetRef ref, SshConnection connection) {
     showModalBottomSheet(
       context: context,
       builder: (context) => SafeArea(
@@ -358,7 +360,7 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 
-  void _confirmDelete(BuildContext context, WidgetRef ref, connection) {
+  void _confirmDelete(BuildContext context, WidgetRef ref, SshConnection connection) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
